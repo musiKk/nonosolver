@@ -1,0 +1,96 @@
+nonosolver is a simple solver for nonograms. It creates constraints in
+conjunctive normal form (CNF) and utilizes the minisat constraint solver to find
+a solution. nonosolver is distributed under terms of the BSD license. See
+COPYING for more information.
+
+Requirements
+------------
+
+nonosolver uses minisat4j to be able to use Minisat for solving nonograms. It
+can be found at https://github.com/musiKk/minisat4j.
+
+Usage
+-----
+
+Due to constraints (no pun intended) in minisat4j nonosolver has to be called
+from the minisat4j directory.
+
+java -cp .:/path/to/nonosolver com.github.musikk.nonosolver.NonoSolver
+    inputfile [outputfile]
+
+inputfile is a file in nonogram format (explained below) or a number
+corresponding to one of the nonogram files distributed with the solver. The
+latter requires the nonogram files to be extracted.
+
+outputfile is optional. It denotes a file name for the output file in PNG
+format. Default is a generic file name in the temp directory of the operating
+system (ONLY CHECKED WITH LINUX).
+
+The Nonogram Format
+-------------------
+nonosolver reads nonogram files with the following format:
+
+col <SPACE> <number of columns> <NEWLINE>
+<block-infos> <NEWLINE>
+row <SPACE> <number of rows> <NEWLINE>
+<block-infos>
+
+with
+<number of columns> ::= <number>
+<number of rows> ::= <number>
+<block-infos> ::= <block-info> (<NEWLINE><block-info>)*
+<block-info> ::= <number> (<SPACE><number>)*
+<number> ::= "a number in decimal representation"
+<SPACE> ::= " "
+<NEWLINE> ::= "\n"
+
+example (this corresponds to nonogram.1 from the distribution):
+col 15
+15
+2 8
+3 7
+3 6
+3 2 5
+3 3 2 2
+3 3 2
+3 4 2 2
+3 4 2
+2 3 2 2
+1 2 2
+1 6
+1 1 3 4
+2 9
+4 4 1 3
+row 15
+15
+10 2
+1 7 1
+1 1 1
+1
+1 3 1
+1 5 2
+2 6 3
+3 5 3
+4 3
+6 1 3 2
+6 1 5
+5 4
+15
+15
+
+which results in the following solution:
+###############
+##########...##
+#.#######.....#
+#...........#.#
+#..............
+#......###....#
+#....#####...##
+##..######..###
+###.#####...###
+####.......###.
+######.#.###.##
+######.#.#####.
+#####......####
+###############
+###############
